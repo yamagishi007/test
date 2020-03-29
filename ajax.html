@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax</title>
+</head>
+<body>
+    <div id="news">
+        
+    </div>
+    <script>
+        var ajax = new XMLHttpRequest();
+        //GETメソッドでjsonデータを取得し非同期通信
+        ajax.open('GET', 'feed.json', true);
+        ajax.onload = function(e) {
+            //readyStateが4で通信状況が完了
+            if (ajax.readyState === 4) {
+                //statusが200だと正常
+                if (ajax.status === 200) {
+                    //ajaxから受け取ったresponseTextをjsonへ
+                    var json = JSON.parse(ajax.responseText);
+                    //受け取ったjsonをconsole.logへ
+                    for (var i=0; i<json.items.length; i++) {
+                        html += '<li>' + json.items[i].title + '</li>';
+                    }
+                    html += '</ul>';
+                    document.getElementById('news').innerHTML = html;
+                    console.log(json);
+                }
+            }
+        }
+        //通信を開始
+        //nullは送るものがない
+        ajax.send(null);
+    </script>
+</body>
+</html>
